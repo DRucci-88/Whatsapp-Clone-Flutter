@@ -2,18 +2,25 @@
 
 A new Flutter project.
 
-## Getting Started
+## Flutter Logs Framework
 
-This project is a starting point for a Flutter application.
+```dart
+import 'package:flutter/material.dart';
 
-A few resources to get you started if this is your first Flutter project:
+void main() {
+  debugPrint('HELLOOO !!');
+  debugPrint('Berasal dari debugPrint - import from material.dart'); 
+}
+```
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+```txt
+PS E:\Flutter_Sukses\whatsapp_clone> flutter logs
+Showing Android SDK built for x86 logs:
+I/flutter (24593): HELLOOO !!
+I/flutter (24593): Berasal dari debugPrint - import from material.dart
+```
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## Firebase Configuration for both platform using Flutter CLI
 
 ```txt
 Firebase configuration file lib\firebase_options.dart generated successfully with the following Firebase apps:
@@ -22,6 +29,10 @@ Platform  Firebase App Id
 android   1:398918307760:android:b594661c43a253d93d9075
 ios       1:398918307760:ios:00696766ea46cd5d3d9075
 ```
+
+### Android SHA-1 fingerprint for Firebase Configuration
+
+<https://stackoverflow.com/questions/15727912/sha-1-fingerprint-of-keystore-certificate>
 
 ```txt
 PS E:\Flutter_Sukses\whatsapp_clone\android> ./gradlew signingReport
