@@ -1,11 +1,16 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:whatsapp_clone/common/repositories/common_firebase_storage_repository.dart';
 import 'package:whatsapp_clone/common/utils/utils.dart';
 import 'package:whatsapp_clone/features/auth/screens/otp_screen.dart';
 import 'package:whatsapp_clone/features/auth/screens/user_information_screen.dart';
+import 'package:whatsapp_clone/models/user_model.dart';
+import 'package:whatsapp_clone/screens/mobile_screen_layout.dart';
 
 final authRepositoryProvider = Provider((ref) {
   return AuthRepository(
@@ -60,6 +65,9 @@ class AuthRepository {
     required String userOTP,
   }) async {
     try {
+      print('auth repo - verify OTP - try');
+      print(verificationId);
+      print(userOTP);
       // Credential get from Phone Number
       PhoneAuthCredential credential = PhoneAuthProvider.credential(
         verificationId: verificationId,
@@ -73,7 +81,55 @@ class AuthRepository {
         (route) => false,
       );
     } on FirebaseAuthException catch (e) {
+      print('auth repo - verify OTP - catch');
+      print(e.message);
       customShowSnackbar(context: context, content: e.message!);
+    }
+  }
+
+  void saveUserDataToFirebase({
+    required String name,
+    required File? profilePic,
+    required ProviderRef ref,
+    required context,
+  }) async {
+    try {
+      print('auth repo - verify OTP - try');
+      String uid = auth.currentUser!.uid;
+      String photoUrl = 'https://picsum.photos/200';
+      print(uid);
+
+      if (profilePic == null) return;
+
+      print('auth repo - verify OTP - try - storeFileToFirebase');
+      photoUrl = await ref
+          .read(commonFirebaseStorageRepository)
+          .storeFileToFirebase('profilePic/$uid', profilePic);
+
+      print(photoUrl);
+
+      final user = UserModel(
+        name: name,
+        uid: uid,
+        profilePic: photoUrl,
+        isOnline: true,
+        phoneNumber: auth.currentUser!.uid,
+        groupId: [],
+      );
+
+      print(user.toString());
+
+      await firestore.collection('users').doc(uid).set(user.toMap());
+
+      Navigator.pushAndRemoveUntil(context, MaterialPageRoute(
+        builder: (context) {
+          return const MobileScreenLayout();
+        },
+      ), (route) => false);
+    } catch (e) {
+      print('auth repo - save user data to firebase - catch');
+      print(e.toString());
+      customShowSnackbar(context: context, content: e.toString());
     }
   }
 }

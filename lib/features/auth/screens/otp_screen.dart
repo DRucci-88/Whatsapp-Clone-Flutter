@@ -44,6 +44,7 @@ class OTPScreen extends ConsumerWidget {
                   if (value.length == 6) {
                     print('verifying otp');
                     verifyOTP(ref, context, value.trim());
+                    return;
                   }
                   print('this function was run');
                 },

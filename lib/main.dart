@@ -2,6 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:whatsapp_clone/colors.dart';
+import 'package:whatsapp_clone/features/auth/screens/user_information_screen.dart';
 import 'package:whatsapp_clone/features/landing/screens/landing_screen.dart';
 import 'package:whatsapp_clone/responsive/responsive_layout.dart';
 import 'package:whatsapp_clone/router.dart';
@@ -29,7 +30,8 @@ class MyApp extends StatelessWidget {
             color: appBarColor,
           )),
       onGenerateRoute: (settings) => generateRoute(settings),
-      home: const LandingScreen(),
+      // home: const LandingScreen(),
+      home: const UserInformationScreen(),
     );
   }
 }
