@@ -73,6 +73,7 @@ class SelectContactsScreen extends ConsumerWidget {
             contact.displayName,
             style: const TextStyle(fontSize: 18),
           ),
+          subtitle: Text(contact.phones[0].number),
         ),
       ),
     );

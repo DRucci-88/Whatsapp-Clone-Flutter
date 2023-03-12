@@ -5,6 +5,7 @@ import 'package:flutter_contacts/flutter_contacts.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:whatsapp_clone/common/utils/utils.dart';
 import 'package:whatsapp_clone/models/user_model.dart';
+import 'package:whatsapp_clone/screens/mobile_chat_screen.dart';
 
 final selectContactsRepositoryProvider = Provider((ref) {
   return SelectContactRepository(firestore: FirebaseFirestore.instance);
@@ -42,9 +43,11 @@ class SelectContactRepository {
         final userData = UserModel.fromMap(document.data());
         if (selectedPhoneNumber == userData.phoneNumber) {
           isFound = true;
-          // Navigator.pushNamed(context);
+          Navigator.pushNamed(context, MobileChatScreen.routeName);
+          return;
         }
       }
+
       if (!isFound) {
         debugPrint('select contact repo - selected contact - try - not found');
         customShowSnackbar(

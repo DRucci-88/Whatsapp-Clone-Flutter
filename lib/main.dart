@@ -17,6 +17,8 @@ void main() async {
   runApp(const ProviderScope(child: MyApp()));
 }
 
+int reload = 0;
+
 class MyApp extends ConsumerWidget {
   const MyApp({super.key});
 
@@ -35,7 +37,7 @@ class MyApp extends ConsumerWidget {
       // home: const LandingScreen(),
       home: ref.watch(userDataAuthProvider).when(
         data: (UserModel? user) {
-          debugPrint('main.dart - import from material.dart');
+          debugPrint('${++reload} main.dart - import from material.dart');
           if (user == null) return const LandingScreen();
           return const MobileScreenLayout();
         },
