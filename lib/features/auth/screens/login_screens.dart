@@ -36,8 +36,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
 
   void _sendPhoneNumber() {
     String phoneNumber = _phoneCtl.text.trim();
-    // print(_country.);
-    print('+${_country?.phoneCode}$phoneNumber');
+    // debugPrint(_country.);
+    debugPrint('+${_country?.phoneCode}$phoneNumber');
     if (_country == null || phoneNumber.isEmpty) {
       customShowSnackbar(context: context, content: 'Fill out all the fields');
       return;

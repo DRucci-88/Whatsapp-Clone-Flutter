@@ -6,7 +6,7 @@ class WebScreenLayout1 extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final screenSize = MediaQuery.of(context).size;
+    // final screenSize = MediaQuery.of(context).size;
     return Scaffold(
       body: Row(
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -18,17 +18,11 @@ class WebScreenLayout1 extends StatelessWidget {
                 maxWidth: 400,
               ),
               child: Column(
-                children: [
+                children: const [
                   /// Web Profile Bar
                   /// Web Search Bar
                   /// Contact List
-                  Container(
-                    // constraints: BoxConstraints(
-                    //   maxHeight: screenSize.height * 0.8,
-                    //   maxWidth: screenSize.width * 0.8,
-                    // ),
-                    child: const ContactsList(),
-                  ),
+                  ContactsList(),
                 ],
               ),
             ),

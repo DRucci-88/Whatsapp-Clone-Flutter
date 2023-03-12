@@ -41,18 +41,18 @@ class AuthRepository {
       await auth.verifyPhoneNumber(
         phoneNumber: phoneNumber,
         verificationCompleted: (phoneAuthCredential) async {
-          print('auth repo - sign in with phone - verification completed');
-          print(phoneAuthCredential);
+          debugPrint('auth repo - sign in with phone - verification completed');
+          debugPrint(phoneAuthCredential.toString());
           await auth.signInWithPhoneNumber(phoneNumber);
         },
         verificationFailed: (error) {
-          print('auth repo - sign in with phone - verification failed');
-          print(error.message);
+          debugPrint('auth repo - sign in with phone - verification failed');
+          debugPrint(error.message);
           throw Exception(error.message);
         },
         codeSent: (verificationId, forceResendingToken) {
-          print('auth repo - sign in with phone - code sent');
-          print(verificationId);
+          debugPrint('auth repo - sign in with phone - code sent');
+          debugPrint(verificationId);
           Navigator.pushNamed(
             context,
             OTPScreen.routeName,
@@ -60,7 +60,8 @@ class AuthRepository {
           );
         },
         codeAutoRetrievalTimeout: (verificationId) {
-          print('auth repo - sign in with phone - code auth retrieval timeout');
+          debugPrint(
+              'auth repo - sign in with phone - code auth retrieval timeout');
         },
       );
     } on FirebaseAuthException catch (e) {
@@ -74,9 +75,9 @@ class AuthRepository {
     required String userOTP,
   }) async {
     try {
-      print('auth repo - verify OTP - try');
-      print(verificationId);
-      print(userOTP);
+      debugPrint('auth repo - verify OTP - try');
+      debugPrint(verificationId);
+      debugPrint(userOTP);
       // Credential get from Phone Number
       PhoneAuthCredential credential = PhoneAuthProvider.credential(
         verificationId: verificationId,
@@ -90,8 +91,8 @@ class AuthRepository {
         (route) => false,
       );
     } on FirebaseAuthException catch (e) {
-      print('auth repo - verify OTP - catch');
-      print(e.message);
+      debugPrint('auth repo - verify OTP - catch');
+      debugPrint(e.message);
       customShowSnackbar(context: context, content: e.message!);
     }
   }
@@ -103,30 +104,30 @@ class AuthRepository {
     required context,
   }) async {
     try {
-      print('auth repo - verify OTP - try');
+      debugPrint('auth repo - verify OTP - try');
       String uid = auth.currentUser!.uid;
       String photoUrl = 'https://picsum.photos/200';
-      print(uid);
+      debugPrint(uid);
 
       if (profilePic == null) return;
 
-      print('auth repo - verify OTP - try - storeFileToFirebase');
+      debugPrint('auth repo - verify OTP - try - storeFileToFirebase');
       photoUrl = await ref
           .read(commonFirebaseStorageRepository)
           .storeFileToFirebase('profilePic/$uid', profilePic);
 
-      print(photoUrl);
+      debugPrint(photoUrl);
 
       final user = UserModel(
         name: name,
         uid: uid,
         profilePic: photoUrl,
         isOnline: true,
-        phoneNumber: auth.currentUser!.uid,
+        phoneNumber: auth.currentUser!.phoneNumber!,
         groupId: [],
       );
 
-      print(user.toString());
+      debugPrint(user.toString());
 
       await firestore.collection('users').doc(uid).set(user.toMap());
 
@@ -136,8 +137,8 @@ class AuthRepository {
         },
       ), (route) => false);
     } catch (e) {
-      print('auth repo - save user data to firebase - catch');
-      print(e.toString());
+      debugPrint('auth repo - save user data to firebase - catch');
+      debugPrint(e.toString());
       customShowSnackbar(context: context, content: e.toString());
     }
   }
